@@ -1,0 +1,10 @@
+html {
+  /* スマホ等用 */
+  font-size: 14px;
+}
+@media (min-width: 800px) {
+  html {
+    /* 画面の大きいPC等用 */
+    font-size: 16px;
+  }
+}

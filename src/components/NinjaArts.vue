@@ -1,15 +1,19 @@
 <template>
   <div class="frame outer">
 
-    <div class="arts-title"><div class="arts-name">{{arts.name}}</div> <div class="arts-nameKana">{{arts.nameKana}}</div></div>
-    <div class="upper-frame">
-      <div class="inner" style="flex-basis: 40%;"><div class="upper-title">タイプ</div> <div class="upper-contents">{{arts.type}}</div></div>
-      <div class="inner" style="flex-basis: 30%;"><div class="upper-title">間合い</div> <div class="upper-contents">{{arts.interval}}</div></div>
-      <div class="inner" style="flex-basis: 30%;"><div class="upper-title">コスト</div> <div class="upper-contents">{{arts.cost}}</div></div>
+    <div class="arts-title">
+      <div class="arts-name">{{arts.name}}</div>
+      <div class="arts-name-kana">{{arts.nameKana}}</div>
+    </div>
+    <div class="top-frame">
+      <div class="inner"><div class="top-title">タイプ</div> <div class="top-contents">{{arts.type}}</div></div>
+      <div class="inner"><div class="top-title">間合い</div> <div class="top-contents">{{arts.interval}}</div></div>
+      <div class="inner"><div class="top-title">コスト</div> <div class="top-contents">{{arts.cost}}</div></div>
     </div> 
-    <div class="upper-frame">
-      <div class="inner" style="flex-basis: 100%;"><div class="upper-title">指定特技</div> <div class="upper-contents" style="text-align: left;">{{arts.designatedSkill}}</div></div>
+    <div class="top-frame">
+      <div class="inner"><div class="top-title">指定特技</div> <div class="top-contents" style="text-align: left;">{{arts.designatedSkill}}</div></div>
     </div> 
+    <div class="frame bottom-frame">{{arts.description}}</div>
 
   </div>
 </template>
@@ -28,11 +32,13 @@ export default {
 }
 .outer {
   /* あとで消す */
-  width: 400px;
+  max-width: 380px;
   /* あとで消す */
-  height: 400px;
+  height: 380px;
   padding: 2px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ヘッダー */
@@ -45,41 +51,52 @@ export default {
   align-items: center;
 }
 .arts-name {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
-.arts-nameKana {
+.arts-name-kana {
   margin-left: 3px;
   font-size: 0.8rem;
 }
 
 /* 上部 */
-.upper-frame {
+.top-frame {
   border-left: black solid 1px;
-
   display: flex;
+  overflow: hidden;
   flex-direction: row;
 }
-.upper-frame > .inner {
+.top-frame > .inner {
   border-bottom: black solid 1px;
   border-right: black solid 1px;
-  padding: 4px 8px;
+  padding: 2px 4px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size: 1rem;
-  white-space: nowrap;
+  font-size: 0.8rem;
 }
-.upper-title {
+.top-frame > .inner:nth-last-child(1) {
+  flex-grow: 1;
+}
+.top-title {
   background: black;
   color: white;
   padding: 2px 6px;
   flex-grow: 0;
 }
-.upper-contents {
+.top-contents {
   padding-left: 4px;
   padding-right: 4px;
   flex-grow: 1;
   text-align: center;
+}
+
+/* 下部 */
+.bottom-frame {
+  margin: 2px 0 0 0;
+  flex-grow: 1;
+  overflow: overlay;
+  max-height: 312px;
+  padding: 2px;
 }
 
 h1,
