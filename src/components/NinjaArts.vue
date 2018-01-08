@@ -1,9 +1,10 @@
 <template>
-  <div class="frame outer">
+  <div class="frame outer" @click="toggle">
 
     <div class="arts-title">
       <div class="arts-name">{{arts.name}}</div>
       <div class="arts-name-kana">{{arts.nameKana}}</div>
+      <input type="checkbox" v-model="checked">
     </div>
     <div class="top-frame">
       <div class="inner"><div class="top-title">タイプ</div> <div class="top-contents">{{arts.type}}</div></div>
@@ -21,7 +22,20 @@
 <script>
 export default {
   name: 'NinjaArts',
-  props: ['arts']
+  props: ['arts'],
+  data: function () {
+    return {
+      checked: false
+    }
+  },
+  methods: {
+    toggle: toggle
+  }
+}
+
+function toggle (ev) {
+  this.checked = !this.checked
+  this.$emit('toggle', this.checked)
 }
 </script>
 

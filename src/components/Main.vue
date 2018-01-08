@@ -1,10 +1,10 @@
 <template>
   <div class="main">
-    <div class="arts"><ninja-arts :arts="arts"/></div>
-    <div class="arts"><ninja-arts :arts="arts"/></div>
-    <div class="arts"><ninja-arts :arts="arts"/></div>
-    <div class="arts"><ninja-arts :arts="arts"/></div>
-    <div class="arts"><ninja-arts :arts="arts"/></div>
+    <div class="arts"><ninja-arts :arts="arts" @toggle="toggleArts" /></div>
+    <div class="arts"><ninja-arts :arts="arts" @toggle="toggleArts" /></div>
+    <div class="arts"><ninja-arts :arts="arts" @toggle="toggleArts" /></div>
+    <div class="arts"><ninja-arts :arts="arts" @toggle="toggleArts" /></div>
+    <div class="arts"><ninja-arts :arts="arts" @toggle="toggleArts" /></div>
   </div>
 </template>
 
@@ -29,6 +29,11 @@ export default {
         description: `装備忍法の【博識】（p84）の効果で得る奥義破り判定への修正が、プラス2からプラス4になる。`,
         sceneDescription: '古今東西の忍法について調べ尽くしている。'
       }
+    }
+  },
+  methods: {
+    toggleArts: function (checked) {
+      console.log(checked)
     }
   }
 }

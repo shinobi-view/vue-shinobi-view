@@ -1,4 +1,10 @@
 {
     "vetur.format.defaultFormatter.js": "vscode-typescript",
-    "javascript.format.insertSpaceBeforeFunctionParenthesis": true
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "eslint.options": {
+        "extensions": [
+            ".js",
+            ".vue"
+        ]
+    }
 }
