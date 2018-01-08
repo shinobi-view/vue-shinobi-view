@@ -4,7 +4,8 @@
     <div class="arts-title">
       <div class="arts-name">{{arts.name}}</div>
       <div class="arts-name-kana">{{arts.nameKana}}</div>
-      <input type="checkbox" v-model="checked">
+      <div style="flex-grow:1;"></div>
+      <div><input type="checkbox" v-model="checked"></div>
     </div>
     <div class="top-frame">
       <div class="inner"><div class="top-title">タイプ</div> <div class="top-contents">{{arts.type}}</div></div>
