@@ -1,6 +1,6 @@
-# vue-sinobi-view
+# vue-shinobi-view
 
-> sinobi-view
+> shinobi-view
 
 ## Build Setup
 
