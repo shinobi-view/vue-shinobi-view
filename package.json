@@ -1,7 +1,7 @@
 {
-  "name": "vue-sinobi-view",
+  "name": "vue-shinobi-view",
   "version": "1.0.0",
-  "description": "sinobi-view",
+  "description": "shinobi-view",
   "author": "gasegi <1353377@gmail.com>",
   "private": true,
   "scripts": {

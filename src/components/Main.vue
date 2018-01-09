@@ -1,7 +1,13 @@
 <template>
 <div>
-  <button id="authorize-button" @click="handleAuthClick" v-bind:disabled="disable.auth">authorize</button>
-  <button id="signout-button" @click="handleSignoutClick" v-bind:disabled="disable.signout">signout</button>
+  <div class ="header">
+    <h1><img id="img-logo" src="../assets/logo.png"> Shinobi-View</h1>
+    <div class="auth-ui"><button id="authorize-button" @click="handleAuthClick" v-bind:disabled="disable.auth">Google認証</button></div>
+    <div class="auth-ui"><button id="signout-button" @click="handleSignoutClick" v-bind:disabled="disable.signout">認証解除(Signout)</button></div>
+    <div class="auth-ui"><button id="get-button" @click="getData" v-bind:disabled="disable.signout">データ<br>リフレッシュ</button></div>
+    <div style="flex-grow:1;"></div>
+    <small class="header-caution">Meiryoだとずれるのは仕様</small>
+  </div>
   <div class="main">
     <div class="arts" v-for="art in arts" :key="art.id">
       <ninja-arts :arts="art" @toggle="toggleArts" />
@@ -46,9 +52,20 @@ const vm = {
      */
     handleSignoutClick (event) {
       gapi.auth2.getAuthInstance().signOut()
+    },
+    getData (event) {
+      getData()
     }
   },
   created () {
+    try {
+      if (localStorage && localStorage.getItem('arts')) {
+        dataObj.arts = JSON.parse(localStorage.getItem('arts'))
+      }
+    } catch (error) {
+      console.error(error)
+    }
+
     gapi.load('client:auth2', initClient)
   }
 }
@@ -91,7 +108,9 @@ function updateSigninStatus (isSignedIn) {
   if (isSignedIn) {
     disable.auth = true
     disable.signout = false
-    getData()
+    if (dataObj.arts.length === 0) {
+      getData()
+    }
   } else {
     disable.auth = false
     disable.signout = true
@@ -103,6 +122,7 @@ function updateSigninStatus (isSignedIn) {
  * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  */
 function getData () {
+  console.log('getData')
   gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: '10U2cJZZBNlWiYzl3UfXjLCmeb5c5-9BrTEFpvVRFdTQ',
     range: '\'忍術\'!A:K'
@@ -110,6 +130,10 @@ function getData () {
     // vm.data.arts = parseArts(response.result.values)
     const arts = parseArts(response.result.values)
     dataObj.arts = arts
+
+    if (localStorage) {
+      localStorage.setItem('arts', JSON.stringify(arts))
+    }
   }).catch(function (response) {
     console.error(response)
   })
@@ -157,12 +181,45 @@ function parseArts (values) {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#img-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+}
+
+.header-caution {
+  font-size: 8px;
+  opacity: 40%;
+}
+
 .main {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
+
 .arts {
   margin: 2px;
+}
+
+.auth-ui {
+  margin: auto 8px auto 18px;
+}
+
+.auth-ui > button {
+  width: 120px;
+  height: 40px;
+
+  /* color: rgb(233, 233, 233);
+  font-size: large;
+  border: 1px solid lightgray;
+  background: linear-gradient(#646464, #202020); */
+}
+.auth-ui > button:disabled {
+  color: rgb(141, 141, 141);
 }
 </style>
