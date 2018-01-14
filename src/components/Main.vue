@@ -6,13 +6,13 @@
     <div class="auth-ui"><button id="signout-button" @click="handleSignoutClick" v-bind:disabled="disable.signout">認証解除(Signout)</button></div>
     <div class="auth-ui"><button id="get-button" @click="getData" v-bind:disabled="disable.signout">データ<br>リフレッシュ</button></div>
     <div class="auth-ui">
-      <label><input type="checkbox" id=""> 選択のみ表示</label>
+      <label><input type="checkbox" v-model="filter"> 選択のみ表示</label>
     </div>
     <div style="flex-grow:1;"></div>
     <small class="header-caution">Meiryoだとずれるのは仕様</small>
   </div>
   <div class="main">
-    <div class="arts" v-for="art in arts" :key="art.id">
+    <div class="arts" v-for="art in filteringData()" :key="art.id">
       <ninja-arts :arts="art" @toggle="toggleArts" />
     </div>
   </div>
@@ -29,7 +29,9 @@ const disable = {
 
 const dataObj = {
   arts: [],
-  disable
+  select: [],
+  disable,
+  filter: false
 }
 
 const vm = {
@@ -41,8 +43,13 @@ const vm = {
     return dataObj
   },
   methods: {
-    toggleArts (checked) {
-      console.log(checked)
+    toggleArts (id, checked) {
+      if (checked) {
+        this.select.push(id)
+      } else {
+        this.select = this.select.filter(val => val !== id)
+      }
+      updateRoute(this.$router, this.select, this.filter)
     },
     /**
      *  Sign in the user upon button click.
@@ -58,9 +65,39 @@ const vm = {
     },
     getData (event) {
       getData()
+    },
+    filteringData () {
+      // OPTIMIZE: パフォーマンス問題のためにはtemplateから頻繁に呼ぶ仕様を修正する
+
+      updateRoute(this.$router, this.select, this.filter)
+
+      if (this.filter) {
+        return this.arts.filter(val => {
+          return this.select.includes(val.id)
+        })
+      } else {
+        return this.arts
+      }
     }
   },
   created () {
+    const select = this.select
+    if (this.$route.query) {
+      const query = this.$route.query
+
+      if (typeof query.select === 'string' && query.select.length > 0) {
+        const sel = query.select.split(',')
+        sel.forEach(function (val) {
+          if (+val !== 0 && Number.isInteger(+val)) {
+            select.push(val)
+          }
+        })
+      }
+      if (query.filter && query.filter === 'true') {
+        this.filter = true
+      }
+    }
+
     try {
       if (localStorage && localStorage.getItem('arts')) {
         dataObj.arts = JSON.parse(localStorage.getItem('arts'))
@@ -74,6 +111,16 @@ const vm = {
 }
 
 export default vm
+
+function updateRoute (router, select, filter) {
+  router.push({
+    // path: '',
+    query: {
+      select: select.join(),
+      filter
+    }
+  })
+}
 
 /**
  *  Initializes the API client library and sets up sign-in state
@@ -216,10 +263,10 @@ function parseArts (values) {
 .auth-ui label {
   font-size: 1.1rem;
 }
-.auth-ui input[type=checkbox] {
- width: 1.2rem;
- height: 1.2rem;
- vertical-align: top;
+.auth-ui input[type="checkbox"] {
+  width: 1.2rem;
+  height: 1.2rem;
+  vertical-align: top;
 }
 
 .auth-ui > button {

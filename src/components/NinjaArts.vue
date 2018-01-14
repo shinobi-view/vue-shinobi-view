@@ -1,11 +1,11 @@
 <template>
-  <div class="frame outer" @click="toggle">
+  <div class="frame outer">
 
     <div class="arts-title">
       <div class="arts-name">{{arts.name}}</div>
       <div class="arts-name-kana">{{arts.nameKana}}</div>
       <div style="flex-grow:1;"></div>
-      <div><input type="checkbox" v-model="checked"></div>
+      <div><input type="checkbox" class="arts-checkbox" v-model="checked"  @click="toggle(arts.id,checked)"></div>
     </div>
     <div class="top-frame">
       <div class="inner"><div class="top-title">タイプ</div> <div class="top-contents">{{arts.type}}</div></div>
@@ -31,12 +31,17 @@ export default {
   },
   methods: {
     toggle: toggle
+  },
+  created () {
+    if (this.$parent.select && this.$parent.select.includes(this.arts.id)) {
+      this.checked = true
+    }
   }
 }
 
-function toggle (ev) {
+function toggle (id, checked) {
   this.checked = !this.checked
-  this.$emit('toggle', this.checked)
+  this.$emit('toggle', id, !checked)
 }
 </script>
 
@@ -103,6 +108,10 @@ function toggle (ev) {
   padding-right: 4px;
   flex-grow: 1;
   text-align: center;
+}
+.arts-checkbox {
+  width: 1.3rem;
+  height: 1.3rem;
 }
 
 /* 下部 */
