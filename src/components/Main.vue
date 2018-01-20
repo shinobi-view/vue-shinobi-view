@@ -2,14 +2,14 @@
 <div>
   <div class ="header">
     <h1><img id="img-logo" src="../assets/logo.png"> Shinobi-View</h1>
-    <div class="auth-ui"><button id="authorize-button" @click="handleAuthClick" v-bind:disabled="disable.auth">Google認証</button></div>
-    <div class="auth-ui"><button id="signout-button" @click="handleSignoutClick" v-bind:disabled="disable.signout">認証解除(Signout)</button></div>
-    <div class="auth-ui"><button id="get-button" @click="getData" v-bind:disabled="disable.signout">データ<br>リフレッシュ</button></div>
+    <div class="auth-ui" v-if="disable.auth"><button id="authorize-button" @click="handleAuthClick">Google認証</button></div>
+    <div class="auth-ui" v-if="disable.signout"><button id="signout-button" @click="handleSignoutClick">認証解除(Signout)</button></div>
+    <div class="auth-ui" v-if="disable.signout"><button id="get-button" @click="getData">データ リフレッシュ</button></div>
     <div class="auth-ui">
       <label><input type="checkbox" v-model="filter"> 選択のみ表示</label>
     </div>
     <div style="flex-grow:1;"></div>
-    <small class="header-caution">Meiryoだとずれるのは仕様</small>
+    <!-- <small class="header-caution">Meiryoだとずれるのは仕様</small> -->
   </div>
   <div class="main">
     <div class="arts" v-for="art in filteringData()" :key="art.id">
@@ -231,6 +231,10 @@ function parseArts (values) {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+h1 {
+  min-width: 250px;
+}
+
 #img-logo {
   width: 40px;
   height: 40px;
@@ -239,6 +243,8 @@ function parseArts (values) {
 .header {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .header-caution {
@@ -257,7 +263,7 @@ function parseArts (values) {
 }
 
 .auth-ui {
-  margin: auto 8px auto 18px;
+  margin: auto 4px;
 }
 
 .auth-ui label {
@@ -270,8 +276,8 @@ function parseArts (values) {
 }
 
 .auth-ui > button {
-  width: 120px;
-  height: 40px;
+  /* width: 120px;
+  height: 40px; */
 
   /* color: rgb(233, 233, 233);
   font-size: large;
